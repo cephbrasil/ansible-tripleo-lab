@@ -1,0 +1,35 @@
+---
+- name: Check undercloud memory requirement
+  assert:
+    that:
+      - ansible_memtotal_mb >= 7680
+    msg: "Undercloud  install reqire at least 7400MB RAM"
+
+- name: Create Stack User
+  include: user.yaml
+
+- name: Install TripleO Repo and PKGs 
+  include: install_pkgs.yaml
+
+- name: Deploy UnderCloud
+  include: undercloud_install.yaml
+
+- name: Check Undercloud services
+  service:
+    name: "{{ item }}"
+    state: started
+  with_items: "{{ undercloud_services }}"
+  tags: verify_undercloud
+
+- name : Generate Image overcloud
+  include: overcloud_images.yaml
+
+- name : Add DNS Server to Undercloud subnet
+  shell: for net in $(source {{ ansible_env.HOME }}/stackrc ; openstack subnet list -c ID -f value); do source {{ ansible_env.HOME }}/stackrc;  openstack subnet set --dns-nameserver "{{ neutron_dns }}" $net ; done
+  tags: neutron_undercloud_dns
+  run_once: true
+
+- name: Configure vbmc
+  include: vbmc.yaml 
+  when: {{ vbmc }} == true
+  tags: vbmc

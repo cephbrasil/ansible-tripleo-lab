@@ -1,0 +1,10 @@
+---
+- name: Build Overcloud images
+  command: openstack overcloud image build
+  environment:
+    DIB_YUM_REPO_CONF: "{{ DIB_YUM_REPO_CONF }}"
+  tags: ovecloud_images
+
+- name: Upload Overcloud images
+  shell: source {{ ansible_env.HOME }}/stackrc && openstack overcloud image upload
+  tags: overcloud_img_upload

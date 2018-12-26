@@ -1,0 +1,24 @@
+---
+- name: Check TripleO repo
+  yum:
+    list=python2-tripleo-repos
+  register: pkg
+
+
+- name: Install the tripleO rpm repo
+  yum:
+    name: "{{ rpm_tripleo_repo_url }}"
+    state: present
+  register: pkg  
+
+ 
+- name: Enable TripleO repo "{{ tripleo_version }}"
+  shell: tripleo-repos -b "{{ tripleo_version }}" current ceph
+  tags: tripleo-rpm
+
+- name: Install tripleo client
+  yum:
+    name:
+      - python-tripleoclient
+  tags: install-pkgs
+

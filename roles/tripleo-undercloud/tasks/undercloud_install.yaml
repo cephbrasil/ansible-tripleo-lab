@@ -1,0 +1,13 @@
+---
+- template:
+    src: undercloud.conf.j2
+    dest: /home/stack/undercloud.conf
+    owner: stack
+    group: stack
+    mode: 0644
+
+- name: Install undercloud
+  command: openstack undercloud install
+  become: true
+  become_user: stack
+  tags: undercloud_install

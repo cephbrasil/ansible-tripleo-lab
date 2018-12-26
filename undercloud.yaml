@@ -1,0 +1,6 @@
+---
+- hosts: tripleo
+  vars_files:
+    - undercloud_vars.yaml
+  roles:
+    - tripleo-undercloud

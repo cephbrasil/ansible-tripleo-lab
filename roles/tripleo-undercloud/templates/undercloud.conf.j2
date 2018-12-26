@@ -1,0 +1,13 @@
+[DEFAULT]
+local_ip = {{ provisioning_net }}.1/24
+undercloud_public_vip = {{ provisioning_net }}.2
+undercloud_admin_vip = {{ provisioning_net }}.3
+local_interface = {{ local_interface }}
+masquerade_network = {{ provisioning_net }}.0/24
+dhcp_start = {{ provisioning_net }}.100
+dhcp_end = {{ provisioning_net }}.150
+network_cidr = {{ provisioning_net }}.0/24
+network_gateway = {{ provisioning_net }}.1
+inspection_iprange = {{ provisioning_net }}.160,{{ provisioning_net }}.199
+generate_service_certificate = true
+certificate_generation_ca = local
